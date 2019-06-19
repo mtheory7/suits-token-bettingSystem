@@ -4,12 +4,10 @@ public class Player {
 
   private String address;
   private String name;
-  private String balance;
 
-  public Player(String address, String name, String balance) {
+  public Player(String address, String name) {
     this.address = address;
     this.name = name;
-    this.balance = balance;
   }
 
   public String getAddress() {

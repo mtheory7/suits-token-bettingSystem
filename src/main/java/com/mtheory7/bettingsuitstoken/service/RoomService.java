@@ -32,12 +32,12 @@ public class RoomService {
     playerList.clear();
     for (String address : addresses) {
       List<String> splitString = Arrays.asList(address.split(":"));
-      playerList.add(new Player(splitString.get(0), splitString.get(1), getBalance(splitString.get(0))));
+      playerList.add(new Player(splitString.get(0), splitString.get(1)));
     }
     return playerList;
   }
 
-  private String getBalance(String address) {
+  public String getBalance(String address) {
     String st = "https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x9f7c4c178d809e33286db94a9bc395141592208f&address=" + address + "&tag=latest&apikey=FDBEUQD459YSJF6S33SX6KR4SF77NNQ88C";
 
     RestTemplate restTemplate = new RestTemplate();
