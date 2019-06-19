@@ -1,10 +1,7 @@
 package com.mtheory7.bettingsuitstoken.controller;
 
-import com.google.gson.Gson;
 import com.mtheory7.bettingsuitstoken.domain.Player;
 import com.mtheory7.bettingsuitstoken.service.RoomService;
-import javax.swing.text.html.HTML;
-import javax.xml.ws.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,10 +82,7 @@ public class RoomController {
           .append("</td></tr>");
     }
 
-    response.append("         </table>\n"
-        + "      </font>\n"
-        + "   </body>\n"
-        + "</html>");
+    response.append("         </table>\n" + "      </font>\n" + "   </body>\n" + "</html>");
 
     return new ResponseEntity<>(String.valueOf(response), HttpStatus.OK);
   }
