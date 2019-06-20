@@ -4,6 +4,7 @@ import com.mtheory7.bettingsuitstoken.domain.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,11 @@ public class RoomService {
 
     ResponseEntity<String> response = restTemplate.getForEntity(st, String.class);
 
-    String balance = new JSONObject(response.getBody()).getString("result");
+    String balance = "";
+    try {
+      balance = new JSONObject(response.getBody()).getString("result");
+    } catch (JSONException e) {
+    }
 
     return String.valueOf(Double.parseDouble(balance) / 1e18);
   }
