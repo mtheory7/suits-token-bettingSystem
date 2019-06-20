@@ -14,12 +14,36 @@ public class RoomService {
 
   List<Player> playerList = new ArrayList<>();
 
-  public List<Player> getPlayers() {
+  public RoomService() {}
+
+  public List<Player> getPlayerList() {
+    if (playerList.isEmpty()) {
+      refreshPlayerData();
+    }
+    return playerList;
+  }
+
+  public void refreshPlayerData() {
     playerList.clear();
     for (String address : addresses) {
       List<String> splitString = Arrays.asList(address.split(":"));
       playerList.add(new Player(splitString.get(0), splitString.get(1)));
     }
-    return playerList;
+  }
+
+  public Player findUserByAddress(String address) {
+    if (playerList.isEmpty()) {
+      refreshPlayerData();
+    }
+    for (Player player : playerList) {
+      if (player.getAddress().equals(address)) {
+        return player;
+      }
+    }
+    return null;
+  }
+
+  public void reset() {
+    playerList = new ArrayList<>();
   }
 }
