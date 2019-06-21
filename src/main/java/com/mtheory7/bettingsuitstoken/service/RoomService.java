@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,7 @@ public class RoomService {
     return playerList;
   }
 
+  @Scheduled(fixedRate = 20000)
   public void refreshPlayerData() {
     playerList.clear();
     for (String address : addresses) {
