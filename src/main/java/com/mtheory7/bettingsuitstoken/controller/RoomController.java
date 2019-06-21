@@ -33,9 +33,11 @@ public class RoomController {
       response
           .append("<tr><td>")
           .append(player.getName())
-          .append("</td><td>")
+          .append("</td><td><a href=\"https://etherscan.io/tokenholdings?a=")
           .append(player.getAddress())
-          .append("</td><td>")
+          .append("\">")
+          .append(player.getAddress())
+          .append("</a></td><td>")
           .append(player.getLastEtherscanBalance())
           .append("</td><td>")
           .append(player.getCurrentSessionBalance())
