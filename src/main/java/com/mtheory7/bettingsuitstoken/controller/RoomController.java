@@ -59,12 +59,15 @@ public class RoomController {
   public ResponseEntity<String> resetSession() {
     roomService.reset();
     return new ResponseEntity<>(
-        "DONE. Refreshing page...<meta http-equiv=\"refresh\" content=\"2; URL='/getPlayers'\"/>", HttpStatus.OK);
+        "DONE. Refreshing page...<meta http-equiv=\"refresh\" content=\"2; URL='/getPlayers'\"/>",
+        HttpStatus.OK);
   }
 
   @PostMapping(path = "/recordGame", consumes = "application/x-www-form-urlencoded")
   public ResponseEntity<String> recordGame(
-      @RequestParam("player") String[] playerAddresses, @RequestParam("winner") String winner, @RequestParam("betAmount") String betAmount) {
+      @RequestParam("player") String[] playerAddresses,
+      @RequestParam("winner") String winner,
+      @RequestParam("betAmount") String betAmount) {
     List<Player> gamePlayers = new ArrayList<>();
     Player winningPlayer = roomService.findUserByAddress(winner);
     Double bet = Double.valueOf(betAmount);
@@ -82,7 +85,9 @@ public class RoomController {
       if (!gamePlayers.contains(winningPlayer))
         throw new Exception("The winner is not on the list of players");
       for (Player player : gamePlayers) {
-        if ((Double.valueOf(player.getLastEtherscanBalance()) - Double.valueOf(player.getCurrentSessionBalance())) < bet) throw new Exception("A player is betting more than they have");
+        if ((Double.valueOf(player.getLastEtherscanBalance())
+                + Double.valueOf(player.getCurrentSessionBalance()))
+            < bet) throw new Exception("A player is betting more than they have");
       }
       for (Player player : gamePlayers) {
         if (!player.equals(winningPlayer)) {
