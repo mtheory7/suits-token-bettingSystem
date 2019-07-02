@@ -1,9 +1,10 @@
 package com.mtheory7.bettingsuitstoken.service;
 
 import com.mtheory7.bettingsuitstoken.domain.Player;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,11 @@ public class RoomService {
   @Value("#{'${wallets}'.split(',')}")
   List<String> addresses;
 
-  List<Player> playerList = new ArrayList<>();
+  Set<Player> playerList = new HashSet<>();
 
   public RoomService() {}
 
-  public List<Player> getPlayerList() {
+  public Set<Player> getPlayerList() {
     if (playerList.isEmpty()) {
       refreshPlayerData();
     }
@@ -46,6 +47,6 @@ public class RoomService {
   }
 
   public void reset() {
-    playerList = new ArrayList<>();
+    playerList = new HashSet<>();
   }
 }
