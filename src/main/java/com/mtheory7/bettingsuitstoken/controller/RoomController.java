@@ -46,7 +46,7 @@ public class RoomController {
           .append("></td></tr>");
     }
     response.append(
-        "</table><input type=\"submit\" value=\"Record Game\" style=\"margin-left:8px;margin-top:8px;background:#00FF00\"></form><form action=\"/resetSession\" method=\"GET\"><input type=\"submit\" value=\"Reset Session\" style=\"margin-left:8px;margin-top:8px;background:#FF0000\"></form></font></body></html>");
+        "</table><input type=\"text\" name=\"betAmount\" value=\"10\"><input type=\"submit\" value=\"Record Game\" style=\"margin-left:8px;margin-top:8px;background:#00FF00\"></form><form action=\"/resetSession\" method=\"GET\"><input type=\"submit\" value=\"Reset Session\" style=\"margin-left:8px;margin-top:8px;background:#FF0000\"></form></font></body></html>");
     return new ResponseEntity<>(String.valueOf(response), HttpStatus.OK);
   }
 
@@ -58,15 +58,18 @@ public class RoomController {
   @GetMapping(path = "/resetSession")
   public ResponseEntity<String> resetSession() {
     roomService.reset();
-    return new ResponseEntity<>("DONE.", HttpStatus.OK);
+    return new ResponseEntity<>(
+        "DONE. Refreshing page...<meta http-equiv=\"refresh\" content=\"2; URL='/getPlayers'\"/>", HttpStatus.OK);
   }
 
   @PostMapping(path = "/recordGame", consumes = "application/x-www-form-urlencoded")
   public ResponseEntity<String> recordGame(
-      @RequestParam("player") String[] playerAddresses, @RequestParam("winner") String winner) {
+      @RequestParam("player") String[] playerAddresses, @RequestParam("winner") String winner, @RequestParam("betAmount") String betAmount) {
     List<Player> gamePlayers = new ArrayList<>();
     Player winningPlayer = roomService.findUserByAddress(winner);
+    Double bet = Double.valueOf(betAmount);
     try {
+      if (bet <= 0) throw new Exception("Cannot bet 0 or a negative amount!");
       for (String playerAddress : playerAddresses) {
         Player toAdd = roomService.findUserByAddress(playerAddress);
         if (toAdd != null) {
@@ -79,10 +82,13 @@ public class RoomController {
       if (!gamePlayers.contains(winningPlayer))
         throw new Exception("The winner is not on the list of players");
       for (Player player : gamePlayers) {
+        if ((Double.valueOf(player.getLastEtherscanBalance()) - Double.valueOf(player.getCurrentSessionBalance())) < bet) throw new Exception("A player is betting more than they have");
+      }
+      for (Player player : gamePlayers) {
         if (!player.equals(winningPlayer)) {
-          player.adjustCurrentSessionBalance(-1 * 10.0);
+          player.adjustCurrentSessionBalance(-1 * bet);
         } else {
-          player.adjustCurrentSessionBalance(10.0 * (gamePlayers.size() - 1));
+          player.adjustCurrentSessionBalance(bet * (gamePlayers.size() - 1));
         }
       }
 
