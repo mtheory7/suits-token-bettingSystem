@@ -46,7 +46,7 @@ public class RoomController {
           .append("></td></tr>");
     }
     response.append(
-        "</table><input type=\"submit\" value=\"Record Game\" style=\"margin-left:8px;margin-top:8px\"></form></font></body></html>");
+        "</table><input type=\"submit\" value=\"Record Game\" style=\"margin-left:8px;margin-top:8px;background:#00FF00\"></form><form action=\"/resetSession\" method=\"GET\"><input type=\"submit\" value=\"Reset Session\" style=\"margin-left:8px;margin-top:8px;background:#FF0000\"></form></font></body></html>");
     return new ResponseEntity<>(String.valueOf(response), HttpStatus.OK);
   }
 

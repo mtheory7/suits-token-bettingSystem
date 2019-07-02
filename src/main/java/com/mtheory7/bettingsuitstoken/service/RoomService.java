@@ -25,7 +25,6 @@ public class RoomService {
     return playerList;
   }
 
-  @Scheduled(fixedRate = 20000)
   public void refreshPlayerData() {
     playerList.clear();
     for (String address : addresses) {
